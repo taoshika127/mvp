@@ -8,7 +8,6 @@ class Diary extends React.Component {
   render() {
     return (
       <div>
-        <label htmlFor="diary">Diary</label>
         <textarea id="diary" name="diary" rows="15" cols="33" defaultValue="Please enter your diary here"></textarea>
         <button id="diary">Save</button>
       </div>

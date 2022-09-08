@@ -1,17 +1,31 @@
 import React from 'react';
+const axios = require('axios');
 
-class MarsImage extends React.Component {
+class SpaceImage extends React.Component {
   constructor(props) {
     super(props)
+  }
+
+  handleSubmit() {
+    console.log('submit request');
+    axios.get('http://localhost:3000/image')
+      .then((response) => {
+        var url = response.data;
+        this.props.onSubmit(url);
+      })
+      .catch(err => {
+        console.error(err);
+      })
+
   }
 
   render() {
     return (
       <div>
-        <button>Generate a random image on Mars!</button>
+        <button id="marsImage" onClick={this.handleSubmit.bind(this)}>Generate a random image from space!</button>
       </div>
     )
   }
 }
 
-export default MarsImage;
+export default SpaceImage;

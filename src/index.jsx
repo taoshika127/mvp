@@ -1,26 +1,41 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import Weather from './components/weather.jsx';
-import MarsImage from './components/image.jsx';
+import SpaceImage from './components/image.jsx';
 import Diary from './components/diary.jsx';
 import History from './components/history.jsx';
+import axios from 'axios';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      weather: {mars: '', earth: ''},
+      weather: {},
       image: '',
       history: []
     }
   }
 
+  componentDidMount() {
+    axios.get('http://localhost:3000/weather')
+      .then((response) => {
+        this.setState({weather: response.data});
+      })
+      .catch(err => {
+        console.error(err);
+      })
+  }
+
+  getImage(url) {
+    this.setState({image: url});
+  }
+
   render() {
     return (
-      <div>
-        <h1>Life On Mars</h1>
+      <div style={{backgroundImage: 'url(' + this.state.image + ')'}}>
+        <h1>Space Log</h1>
+        <SpaceImage onSubmit={this.getImage.bind(this)} test={this.state}/>
         <Weather data={this.state.weather}/>
-        <MarsImage data={this.state.image}/>
         <Diary />
         <History data={this.state.history}/>
       </div>
