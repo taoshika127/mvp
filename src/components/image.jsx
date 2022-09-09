@@ -7,7 +7,6 @@ class SpaceImage extends React.Component {
   }
 
   handleSubmit() {
-    console.log('submit request');
     axios.get('http://localhost:3000/image')
       .then((response) => {
         var url = response.data;

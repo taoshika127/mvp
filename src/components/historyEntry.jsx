@@ -8,7 +8,8 @@ class HistoryEntry extends React.Component {
   render() {
     return (
       <div>
-        <p>history entry </p>
+        <p>{this.props.data.date}</p>
+        <p>{this.props.data.body}</p>
       </div>
     )
   }

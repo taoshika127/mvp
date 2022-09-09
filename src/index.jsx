@@ -11,7 +11,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       weather: {},
-      image: '',
+      image: 'url(externalSrc/backgroundSpace.png)',
       history: []
     }
   }
@@ -20,23 +20,28 @@ class App extends React.Component {
     axios.get('http://localhost:3000/weather')
       .then((response) => {
         this.setState({weather: response.data});
-      })
-      .catch(err => {
-        console.error(err);
-      })
+      });
+    axios.get('http://localhost:3000/diaries')
+      .then((response) => {
+        this.setState({history: response.data})
+      });
   }
 
   getImage(url) {
-    this.setState({image: url});
+    document.body.style.backgroundImage = 'url(' + url + ')';
+  }
+
+  getDiaries(data) {
+    this.setState({history: data});
   }
 
   render() {
     return (
-      <div style={{backgroundImage: 'url(' + this.state.image + ')'}}>
+      <div id="app">
         <h1>Space Log</h1>
-        <SpaceImage onSubmit={this.getImage.bind(this)} test={this.state}/>
+        <SpaceImage onSubmit={this.getImage.bind(this)}/>
         <Weather data={this.state.weather}/>
-        <Diary />
+        <Diary onSubmit={this.getDiaries.bind(this)}/>
         <History data={this.state.history}/>
       </div>
     )
@@ -45,3 +50,5 @@ class App extends React.Component {
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App />);
+
+//style={{backgroundImage: 'url(' + this.state.image + ')', backgroundSize: '100%'}}

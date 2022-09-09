@@ -8,8 +8,8 @@ class History extends React.Component {
 
   render() {
     return (
-      <div>
-        <p>History: </p>
+      <div id="history">
+        <p>History Logs: </p>
         {this.props.data.map((entry, index) => {
           return (
             <div key={index}>

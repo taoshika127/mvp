@@ -1,0 +1,26 @@
+@font-face {
+  font-family:Fussion;
+  src: url(externalSrc/Teko-Regular.ttf);
+}
+
+body {
+  background-image: url(externalSrc/backgroundSpace.png);
+  background-size: 100%;
+  margin-left: 40px;
+}
+
+#app {
+  font-family:Fussion;
+  font-size: 25px;
+  color:azure;
+}
+
+button {
+  font-family:Fussion;
+  font-size: 18px;
+}
+
+#history {
+  font-size: 20px;
+  color: grey;
+}

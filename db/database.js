@@ -6,9 +6,7 @@ const Schema = mongoose.Schema;
 //create Diaries collection on mongodb which contains all the diaries data
 const DiarySchema = new Schema({
   date: String,
-  weather: String,
-  body: String,
-  imageURL: String
+  body: String
 });
 const Diaries = mongoose.model('Diaries', DiarySchema);
 
@@ -31,9 +29,14 @@ const ImageSchema = new Schema({
 const Images = mongoose.model('Images', ImageSchema);
 
 module.exports = {
-  saveDiaries: (data, cb) => {
+  saveDiary: ({ date, body }, cb) => {
     //save the passed in data to Diaries model inside mongodb, then invoke a cb
     //fill out later when data is defined on both client and server side
+    Diaries.findOneAndUpdate({body}, {date, body}, {upsert: true})
+      .then(cb)
+      .catch(err => {
+        console.error(err);
+      })
   },
 
   saveWeather: (data, cb) => {
@@ -47,7 +50,15 @@ module.exports = {
     }).catch(err => {
       console.error(err);
     })
+  },
+
+  readDiaries: (cb) => {
+    Diaries.find({}).then((data) => {
+      cb(data);
+    })
   }
+
+
 
 
 }
