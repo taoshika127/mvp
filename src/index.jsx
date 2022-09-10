@@ -11,7 +11,6 @@ class App extends React.Component {
     super(props);
     this.state = {
       weather: {},
-      image: 'url(externalSrc/backgroundSpace.png)',
       history: []
     }
   }

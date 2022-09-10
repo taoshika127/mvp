@@ -28,6 +28,13 @@ const ImageSchema = new Schema({
 })
 const Images = mongoose.model('Images', ImageSchema);
 
+//create Users collection on mongodb which contains all the users data
+const UsersSchema = new Schema({
+  name: String,
+  password: String
+});
+const Users = mongoose.model('Users', UsersSchema);
+
 module.exports = {
   saveDiary: ({ date, body }, cb) => {
     //save the passed in data to Diaries model inside mongodb, then invoke a cb
@@ -56,10 +63,33 @@ module.exports = {
     Diaries.find({}).then((data) => {
       cb(data);
     })
+  },
+
+  addNewUser: ({ name, password}, cb) => {
+    Users.find({ name })
+      .then(data => {
+        if (data.length > 0) {
+          cb('user already exists!')
+        } else {
+          Users.create({ name, password })
+            .then(() => {
+              console.log('new user created');
+              cb(null);
+            })
+        }
+      })
+  },
+
+  validateUsernamePassword: ({ name, password }, cb) => {
+    Users.find({name, password})
+      .then(data => {
+        if (data.length === 0) {
+          cb('wrong username or password')
+        } else {
+          cb(null);
+        }
+      })
   }
-
-
-
 
 }
 

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Register</title>
+        <style>
+          body {
+            background-color: black;
+            color: azure;
+            font-family: Fussion;
+          }
+        </style>
+    </head>
+    <body>
+      <div>
+        <h1>Register</h1>
+        <form action="/register" method="POST">
+          <label htmlFor="username">Username: </label>
+          <input type="text" name="username" id="username" placeholder="Enter Username" required/>
+          <br />
+          <br />
+          <label htmlFor="password">Password : </label>
+          <input type="text" name="password" id="password" placeholder="Enter Password" required/>
+          <br />
+          <br />
+          <button id="btn" type="submit">Register</button>
+          <br />
+          <br />
+        </form>
+        <p>Note: If the registered username already exists, you will be redirected to the login page!</p>
+        <a id="register" href = "/login">Login</a>
+      </div>
+    </body>
+
+</html>
