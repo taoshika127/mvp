@@ -1,6 +1,6 @@
 const { getWeatherHandler, postHandler, getImageHandler, getDiariesHandler } = require('./requestHandler.js');
-const { auth } = require('./authentication.js');
 const express = require('express');
+const session = require('express-session');
 const html = require('html');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -10,12 +10,34 @@ let port = 3000 || process.env.PORT;
 const localHost = `http://localhost:${port}`;
 
 const app = express();
-app.use('/home', express.static(path.join(__dirname + '/../dist')));
+app.use('/home', (req, res, cb) => {
+  if (session.userId) {
+    cb();
+  } else {
+    res.redirect('/login');
+  }
+}, express.static(path.join(__dirname + '/../dist')));
+
 app.use(express.json());
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(session({
+  name: 'sid',
+  resave: false,
+  saveUninitialized: false,
+  secret: 'spacerocks',
+  cookie: {
+    maxAge: 3600000,
+    sameSite: true,
+  }
+}))
 
 app.get('/', (req, res) => {
-  res.redirect('/login');
+  if (session.userId) {
+    res.redirect('/home');
+  } else {
+    res.redirect('/login');
+  }
+
 })
 
 app.get('/login', (req, res) => {
@@ -27,6 +49,7 @@ app.get('/register', (req, res) => {
 });
 
 app.get('/logout', (req, res) => {
+  session.userId = false;
   res.sendFile(path.join(__dirname, '../dist/auth/logout.html'))
 });
 
@@ -44,6 +67,7 @@ app.post('/login', (req, res) => {
       <a href="/register">Register</a>
       `)
     } else {
+      session.userId = true;
       res.redirect('/home');
     }
   })
@@ -61,6 +85,7 @@ app.post('/register', (req, res) => {
       <a href="/login">Login</a>
       `)
     } else {
+      session.userId = true;
       res.redirect('/home');
     }
   })
